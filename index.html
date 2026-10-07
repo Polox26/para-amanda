@@ -609,19 +609,57 @@
     }
 
     @media (max-width: 720px) {
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
       .page {
         padding: 10px;
-        place-items: stretch;
+        display: block;
+        min-height: 100dvh;
+        overflow: visible;
       }
 
       .app {
-        min-height: calc(100vh - 20px);
         width: 100%;
+        min-height: calc(100dvh - 20px);
+        height: auto;
         border-radius: 16px;
+        overflow: visible;
+      }
+
+      .screen {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        min-height: calc(100dvh - 20px);
+        transform: none;
+      }
+
+      .screen:not(.active) {
+        display: none;
+      }
+
+      .screen.active {
+        display: grid;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .hero,
+      .final {
+        min-height: calc(100dvh - 20px);
       }
 
       .hero-inner,
       .final-inner {
+        min-height: calc(100dvh - 20px);
         padding: 24px 18px;
       }
 
@@ -630,7 +668,15 @@
       }
 
       .stage-wrap {
-        padding: 18px 16px 22px;
+        padding: 18px 16px 28px;
+        min-height: auto;
+        overflow: visible;
+      }
+
+      .stage {
+        min-height: auto;
+        align-content: start;
+        padding-bottom: 8px;
       }
 
       h1 {
@@ -665,10 +711,7 @@
         flex-direction: column;
       }
 
-      .btn {
-        width: 100%;
-      }
-
+      .btn,
       .tap-heart {
         width: 100%;
       }
