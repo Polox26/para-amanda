@@ -1,0 +1,1289 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Una pregunta para Amanda</title>
+  <style>
+    /*
+      PERSONALIZACION RAPIDA DE COLORES
+      Tambien puedes cambiar estos colores desde la variable CONFIG.colores
+      que esta en el bloque <script> al final del archivo.
+    */
+    :root {
+      --bg: #fff8f1;
+      --paper: #fffdf8;
+      --ink: #2e2024;
+      --muted: #785f63;
+      --wine: #8f1d46;
+      --rose: #d95f80;
+      --gold: #c89435;
+      --jade: #11665b;
+      --line: rgba(143, 29, 70, 0.18);
+      --soft: rgba(217, 95, 128, 0.14);
+      --shadow: 0 24px 60px rgba(57, 26, 37, 0.16);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Georgia", "Times New Roman", serif;
+      background:
+        linear-gradient(90deg, rgba(143, 29, 70, 0.08) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(17, 102, 91, 0.06) 1px, transparent 1px),
+        linear-gradient(135deg, #fff9f3 0%, #fff3f5 46%, #f7fffb 100%);
+      background-size: 46px 46px, 46px 46px, auto;
+      overflow-x: hidden;
+    }
+
+    body.celebrating {
+      overflow: hidden;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      padding: 18px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(120deg, transparent 0 18%, rgba(200, 148, 53, 0.11) 18% 19%, transparent 19% 100%),
+        linear-gradient(300deg, transparent 0 70%, rgba(17, 102, 91, 0.10) 70% 71%, transparent 71% 100%);
+      opacity: 0.9;
+    }
+
+    .spark-field {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .spark {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      transform: rotate(45deg);
+      border: 1px solid rgba(200, 148, 53, 0.55);
+      animation: twinkle 5.2s ease-in-out infinite;
+    }
+
+    .spark:nth-child(1) { left: 11%; top: 14%; animation-delay: 0.2s; }
+    .spark:nth-child(2) { left: 82%; top: 16%; animation-delay: 1.5s; }
+    .spark:nth-child(3) { left: 18%; top: 79%; animation-delay: 2.8s; }
+    .spark:nth-child(4) { left: 74%; top: 82%; animation-delay: 0.9s; }
+    .spark:nth-child(5) { left: 50%; top: 7%; animation-delay: 3.4s; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: rotate(45deg) scale(0.82); }
+      50% { opacity: 1; transform: rotate(45deg) scale(1.18); }
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 760px);
+      min-height: 640px;
+      background: var(--paper);
+      background: color-mix(in srgb, var(--paper) 92%, white);
+      border: 1px solid rgba(143, 29, 70, 0.16);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(90deg, rgba(200, 148, 53, 0.09) 0 1px, transparent 1px 22px),
+        linear-gradient(180deg, rgba(255,255,255,0.48), transparent 26%);
+      mask-image: linear-gradient(180deg, black, transparent 56%);
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 360ms ease, transform 360ms ease;
+    }
+
+    .screen.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .hero,
+    .final {
+      grid-template-rows: 1fr;
+    }
+
+    .hero-inner,
+    .final-inner {
+      min-height: 100%;
+      padding: 32px;
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      position: relative;
+    }
+
+    .hero-visual {
+      width: min(100%, 420px);
+      margin: 0 auto 8px;
+    }
+
+    .hero-visual svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--jade);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 3rem;
+      line-height: 1.02;
+      font-weight: 700;
+      max-width: 12ch;
+    }
+
+    .hero h1 {
+      max-width: 13ch;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.58;
+    }
+
+    .lead {
+      max-width: 58ch;
+      font-size: 1.12rem;
+    }
+
+    .hero-actions,
+    .final-actions,
+    .stage-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .btn {
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--wine);
+      box-shadow: 0 12px 28px rgba(143, 29, 70, 0.22);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.98rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+      white-space: normal;
+      text-align: center;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(143, 29, 70, 0.28);
+      outline: 2px solid rgba(200, 148, 53, 0.45);
+      outline-offset: 3px;
+    }
+
+    .btn.secondary {
+      color: var(--wine);
+      background: rgba(143, 29, 70, 0.09);
+      box-shadow: none;
+      border: 1px solid rgba(143, 29, 70, 0.18);
+    }
+
+    .btn.gold {
+      background: var(--gold);
+      box-shadow: 0 12px 28px rgba(200, 148, 53, 0.26);
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 1;
+      padding: 22px 24px 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--jade);
+    }
+
+    .progress {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(143, 29, 70, 0.10);
+    }
+
+    .progress span {
+      display: block;
+      width: 16.66%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--wine), var(--rose), var(--gold));
+      transition: width 300ms ease;
+    }
+
+    .stage-wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 0;
+      padding: 22px 24px 26px;
+      display: grid;
+    }
+
+    .stage {
+      display: none;
+      min-height: 100%;
+      align-content: center;
+      gap: 18px;
+    }
+
+    .stage.active {
+      display: grid;
+      animation: stageIn 340ms ease both;
+    }
+
+    @keyframes stageIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .stage-kicker {
+      margin: 0 0 -6px;
+      color: var(--gold);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .memory-grid,
+    .choice-grid,
+    .feeling-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .memory-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .memory-card,
+    .choice-card,
+    .feeling-chip {
+      min-height: 118px;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.62);
+      color: var(--ink);
+      text-align: left;
+      transition: transform 170ms ease, border-color 170ms ease, background 170ms ease;
+    }
+
+    .memory-card {
+      display: grid;
+      align-content: center;
+      gap: 8px;
+    }
+
+    .memory-card .seal {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(143, 29, 70, 0.10);
+      display: grid;
+      place-items: center;
+      color: var(--wine);
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 900;
+    }
+
+    .memory-card strong,
+    .choice-card strong,
+    .feeling-chip strong {
+      display: block;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.98rem;
+      line-height: 1.25;
+    }
+
+    .memory-card span,
+    .choice-card span {
+      display: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.42;
+    }
+
+    .memory-card.open,
+    .choice-card.selected,
+    .feeling-chip.selected {
+      border-color: var(--wine);
+      border-color: color-mix(in srgb, var(--wine) 55%, white);
+      background: rgba(217, 95, 128, 0.14);
+      background: color-mix(in srgb, var(--soft) 64%, white);
+      transform: translateY(-2px);
+    }
+
+    .memory-card.open span,
+    .choice-card.selected span {
+      display: block;
+    }
+
+    .choice-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .choice-card {
+      min-height: 104px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .result-note,
+    .soft-note {
+      margin: 0;
+      padding: 14px 16px;
+      border-left: 4px solid var(--gold);
+      border-radius: 0 12px 12px 0;
+      background: rgba(200, 148, 53, 0.12);
+      color: var(--ink);
+    }
+
+    .riddle-box,
+    .button-game,
+    .hold-box {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      min-width: 0;
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      border: 1px solid rgba(143, 29, 70, 0.28);
+      border-radius: 12px;
+      color: var(--ink);
+      background: #fff;
+      outline: 0;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--wine);
+      box-shadow: 0 0 0 4px rgba(143, 29, 70, 0.12);
+    }
+
+    .tiny {
+      margin: 0;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .tap-heart {
+      justify-self: start;
+      position: relative;
+      min-width: 180px;
+      min-height: 62px;
+      background: var(--jade);
+      transition: transform 220ms ease, margin 220ms ease, background 220ms ease;
+    }
+
+    .tap-heart.bump {
+      animation: heartbeat 420ms ease;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1) rotate(0deg); }
+      35% { transform: scale(1.09) rotate(-1deg); }
+      70% { transform: scale(0.98) rotate(1deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    .feeling-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .feeling-chip {
+      min-height: 84px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .feeling-chip strong {
+      font-size: 0.94rem;
+    }
+
+    .feeling-summary {
+      min-height: 64px;
+    }
+
+    .hold-target {
+      width: 100%;
+      min-height: 72px;
+      border-radius: 14px;
+      background: linear-gradient(90deg, var(--wine), var(--rose));
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      box-shadow: 0 16px 34px rgba(143, 29, 70, 0.24);
+      user-select: none;
+      touch-action: none;
+    }
+
+    .hold-meter {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(143, 29, 70, 0.12);
+    }
+
+    .hold-meter span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--jade), var(--gold));
+      transition: width 80ms linear;
+    }
+
+    .final .final-inner {
+      text-align: left;
+    }
+
+    .final h1 {
+      max-width: 10ch;
+      color: var(--wine);
+      font-size: 3.6rem;
+    }
+
+    .final-phrase {
+      max-width: 46ch;
+      color: var(--ink);
+      font-size: 1.18rem;
+    }
+
+    .answer-state {
+      min-height: 56px;
+      margin-top: 4px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+      color: var(--jade);
+    }
+
+    .confetti-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .heart-burst {
+      position: fixed;
+      z-index: 5;
+      pointer-events: none;
+      font-size: 1.2rem;
+      animation: floatHeart 1200ms ease-out forwards;
+    }
+
+    @keyframes floatHeart {
+      from { opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
+      to { opacity: 0; transform: translate(-50%, -170%) scale(1.8); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 10px;
+        place-items: stretch;
+      }
+
+      .app {
+        min-height: calc(100vh - 20px);
+        width: 100%;
+        border-radius: 16px;
+      }
+
+      .hero-inner,
+      .final-inner {
+        padding: 24px 18px;
+      }
+
+      .topbar {
+        padding: 18px 16px 0;
+      }
+
+      .stage-wrap {
+        padding: 18px 16px 22px;
+      }
+
+      h1 {
+        font-size: 2.35rem;
+      }
+
+      h2 {
+        font-size: 1.65rem;
+      }
+
+      .final h1 {
+        font-size: 2.75rem;
+      }
+
+      .memory-grid,
+      .choice-grid,
+      .feeling-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .memory-card,
+      .choice-card,
+      .feeling-chip {
+        min-height: 92px;
+      }
+
+      .input-row,
+      .hero-actions,
+      .final-actions,
+      .stage-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .tap-heart {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!--
+    PERSONALIZACION PARA PAUL
+    1. Baja hasta el bloque <script> y cambia CONFIG.nombreElla.
+       Puedes dejar "Amanda" o poner el nombre real de ella.
+    2. Cambia CONFIG.recuerdos por recuerdos reales de ustedes.
+    3. Cambia CONFIG.sentimientos si quieres frases mas personales.
+    4. Cambia CONFIG.fechaEspecial y CONFIG.fraseFinal si no lo envias el 7 de octubre.
+    5. Cambia CONFIG.colores si quieres otra paleta.
+    Todo esta dentro de este unico archivo: HTML + CSS + JS inline, sin dependencias externas.
+  -->
+
+  <canvas class="confetti-canvas" id="confettiCanvas" aria-hidden="true"></canvas>
+
+  <div class="page">
+    <div class="spark-field" aria-hidden="true">
+      <span class="spark"></span>
+      <span class="spark"></span>
+      <span class="spark"></span>
+      <span class="spark"></span>
+      <span class="spark"></span>
+    </div>
+
+    <main class="app" aria-live="polite">
+      <section class="screen hero active" id="introScreen">
+        <div class="hero-inner">
+          <div class="hero-visual" aria-hidden="true">
+            <svg viewBox="0 0 520 220" role="img">
+              <defs>
+                <linearGradient id="ribbonGradient" x1="0" x2="1">
+                  <stop offset="0" style="stop-color: var(--wine)"/>
+                  <stop offset="0.48" style="stop-color: var(--rose)"/>
+                  <stop offset="1" style="stop-color: var(--gold)"/>
+                </linearGradient>
+              </defs>
+              <path d="M45 148 C98 46, 178 42, 252 118 C325 42, 412 48, 470 148" fill="none" stroke="url(#ribbonGradient)" stroke-width="18" stroke-linecap="round"/>
+              <path d="M252 118 C222 89, 181 89, 164 119 C144 154, 178 188, 252 202 C326 188, 360 154, 340 119 C323 89, 282 89, 252 118Z" fill="rgba(143,29,70,.10)" stroke="var(--wine)" stroke-width="5"/>
+              <path d="M97 70 L110 95 L138 99 L118 119 L123 147 L97 134 L72 147 L77 119 L57 99 L85 95Z" fill="rgba(200,148,53,.22)" stroke="var(--gold)" stroke-width="3"/>
+              <path d="M421 78 L431 97 L452 100 L437 115 L441 136 L421 126 L402 136 L406 115 L391 100 L412 97Z" fill="rgba(17,102,91,.16)" stroke="var(--jade)" stroke-width="3"/>
+            </svg>
+          </div>
+          <p class="eyebrow">Un mini viaje para <span data-name>Amanda</span></p>
+          <h1>Antes de preguntarte algo...</h1>
+          <p class="lead">
+            Paúl preparó seis retos pequeños. No hay respuestas malas:
+            solo pistas, recuerdos y una pregunta que merece aparecer con magia.
+          </p>
+          <div class="hero-actions">
+            <button class="btn" id="startBtn" type="button">Empezar el juego ❤️</button>
+            <button class="btn secondary" id="resetBtn" type="button">Reiniciar</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="gameScreen">
+        <header class="topbar">
+          <div class="topbar-row">
+            <span id="stepLabel">Reto 1 de 6</span>
+            <span>Para <span data-name>Amanda</span></span>
+          </div>
+          <div class="progress" aria-label="Progreso">
+            <span id="progressBar"></span>
+          </div>
+        </header>
+
+        <div class="stage-wrap">
+          <article class="stage active" data-stage="0">
+            <p class="stage-kicker">Reto 1</p>
+            <div>
+              <h2>Abre tres recuerdos guardados</h2>
+              <p>Toca cada sello. Cuando estén abiertos, el siguiente paso se desbloquea.</p>
+            </div>
+            <div class="memory-grid" id="memoryGrid"></div>
+            <p class="soft-note hidden" id="memoryDone">Listo. Hay recuerdos que no hacen ruido, pero se quedan viviendo bonito.</p>
+            <div class="stage-actions">
+              <button class="btn" id="nextMemory" type="button" disabled>Siguiente reto</button>
+            </div>
+          </article>
+
+          <article class="stage" data-stage="1">
+            <p class="stage-kicker">Reto 2</p>
+            <div>
+              <h2>Elige una sospecha bonita</h2>
+              <p>¿Qué fue lo primero que hizo que Paúl empezara a sonreír sin darse cuenta?</p>
+            </div>
+            <div class="choice-grid" id="choiceGrid"></div>
+            <p class="result-note hidden" id="choiceResult"></p>
+            <div class="stage-actions">
+              <button class="btn" id="nextChoice" type="button" disabled>Siguiente reto</button>
+            </div>
+          </article>
+
+          <article class="stage" data-stage="2">
+            <p class="stage-kicker">Reto 3</p>
+            <div>
+              <h2>Un acertijo facilito</h2>
+              <p>Completa la frase: “Si pudiera escoger mi lugar favorito, escogería estar...”</p>
+            </div>
+            <div class="riddle-box">
+              <div class="input-row">
+                <input id="riddleInput" type="text" autocomplete="off" placeholder="Escribe la respuesta">
+                <button class="btn gold" id="checkRiddle" type="button">Probar</button>
+              </div>
+              <p class="tiny" id="riddleHint">Pista: empieza con “con” y termina con una sonrisa.</p>
+              <p class="result-note hidden" id="riddleResult"></p>
+            </div>
+            <div class="stage-actions">
+              <button class="btn" id="nextRiddle" type="button" disabled>Siguiente reto</button>
+            </div>
+          </article>
+
+          <article class="stage" data-stage="3">
+            <p class="stage-kicker">Reto 4</p>
+            <div>
+              <h2>El botón que no sabe disimular</h2>
+              <p>Este botón intenta hacerse el serio. Tócalo hasta que confiese.</p>
+            </div>
+            <div class="button-game">
+              <button class="btn tap-heart" id="tapHeart" type="button">No estoy nervioso</button>
+              <p class="tiny" id="tapCounter">Toques sinceros: 0 de 5</p>
+              <p class="result-note hidden" id="tapResult">Ok, sí. Paúl está nervioso, feliz y con muchas ganas de decirte algo importante.</p>
+            </div>
+            <div class="stage-actions">
+              <button class="btn" id="nextTap" type="button" disabled>Siguiente reto</button>
+            </div>
+          </article>
+
+          <article class="stage" data-stage="4">
+            <p class="stage-kicker">Reto 5</p>
+            <div>
+              <h2>Lo que me haces sentir</h2>
+              <p>Elige tres palabras. No tienen que ser perfectas; solo tienen que sentirse tuyas.</p>
+            </div>
+            <div class="feeling-grid" id="feelingGrid"></div>
+            <p class="result-note feeling-summary" id="feelingSummary">Cuando marques tres, aparece el mensaje escondido.</p>
+            <div class="stage-actions">
+              <button class="btn" id="nextFeeling" type="button" disabled>Siguiente reto</button>
+            </div>
+          </article>
+
+          <article class="stage" data-stage="5">
+            <p class="stage-kicker">Reto final</p>
+            <div>
+              <h2>Mantén presionado el corazón</h2>
+              <p>Solo unos segundos. Es la forma más bonita de abrir la última puerta.</p>
+            </div>
+            <div class="hold-box">
+              <button class="hold-target" id="holdTarget" type="button">Mantener presionado ❤️</button>
+              <div class="hold-meter" aria-hidden="true"><span id="holdMeter"></span></div>
+              <p class="tiny" id="holdText">Necesita 3 segundos de valentía.</p>
+            </div>
+            <div class="stage-actions">
+              <button class="btn" id="goFinal" type="button" disabled>Ver la pregunta</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen final" id="finalScreen">
+        <div class="final-inner">
+          <p class="eyebrow">La pregunta importante</p>
+          <h1>¿Puedo ser tu novio?</h1>
+          <p class="final-phrase" id="finalPhrase">
+            Hoy, 7 de octubre, quiero que sea el comienzo de algo muy bonito contigo.
+          </p>
+          <div class="final-actions">
+            <button class="btn" id="yesBtn" type="button">Sí ❤️</button>
+            <button class="btn secondary" id="obviousBtn" type="button">Obvio que sí 😌</button>
+          </div>
+          <p class="answer-state" id="answerState"></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <noscript>
+    <p>Este mini juego necesita JavaScript activado para mostrar los retos y la celebracion final.</p>
+  </noscript>
+
+  <script>
+    /*
+      PERSONALIZACION DE MENSAJES PARA PAUL
+      Cambia solo los textos entre comillas si quieres hacerlo mas personal.
+      El archivo seguira funcionando aunque lo envies por WhatsApp como .html.
+    */
+    const CONFIG = {
+      nombreElla: "Amanda",
+      nombreEl: "Paúl",
+      fechaEspecial: "7 de octubre",
+      fraseFinal: "Hoy, 7 de octubre, quiero que sea el comienzo de algo muy bonito contigo.",
+
+      // Cambia estos colores si quieres otra estetica.
+      colores: {
+        bg: "#fff8f1",
+        paper: "#fffdf8",
+        ink: "#2e2024",
+        muted: "#785f63",
+        wine: "#8f1d46",
+        rose: "#d95f80",
+        gold: "#c89435",
+        jade: "#11665b"
+      },
+
+      // Cambia estos recuerdos por momentos reales de ustedes.
+      recuerdos: [
+        {
+          titulo: "Tu sonrisa",
+          texto: "Esa que aparece de repente y me deja pensando: “sí, aquí me quiero quedar”."
+        },
+        {
+          titulo: "Nuestras charlas",
+          texto: "Porque contigo hasta una conversación sencilla se vuelve algo que quiero repetir."
+        },
+        {
+          titulo: "Lo que viene",
+          texto: "Me emociona imaginar planes, risas y días normales que contigo se sientan especiales."
+        }
+      ],
+
+      // Todas las opciones son correctas; el juego es para sonreir.
+      opcionesDivertidas: [
+        {
+          titulo: "Tu forma de mirar",
+          texto: "La mirada que hace que Paúl pierda el hilo... y no quiera encontrarlo."
+        },
+        {
+          titulo: "Tu risa",
+          texto: "Una risa con peligro: puede convertir cualquier día en un recuerdo bonito."
+        },
+        {
+          titulo: "Tu manera de ser",
+          texto: "Esa mezcla entre ternura, chispa y calma que se queda rondando en la cabeza."
+        },
+        {
+          titulo: "Todo lo anterior",
+          texto: "Respuesta legalmente aceptada por el comité oficial del corazón de Paúl."
+        }
+      ],
+
+      // Puedes cambiar estas palabras por sensaciones mas tuyas.
+      sentimientos: [
+        "Calma",
+        "Alegría",
+        "Confianza",
+        "Ilusión",
+        "Ganas de verte",
+        "Un poquito de nervios"
+      ],
+
+      respuestasAcertijo: ["contigo", "con tigo", "a tu lado", "junto a ti", "con vos", "con usted"]
+    };
+
+    const state = {
+      stage: 0,
+      memoriesOpen: new Set(),
+      feelings: new Set(),
+      tapCount: 0,
+      confettiPieces: [],
+      confettiFrame: null,
+      holdTimer: null,
+      holdStartedAt: 0,
+      holdDone: false
+    };
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    function applyConfig() {
+      document.title = `Una pregunta para ${CONFIG.nombreElla}`;
+      $$("[data-name]").forEach((item) => {
+        item.textContent = CONFIG.nombreElla;
+      });
+      $("#finalPhrase").textContent = CONFIG.fraseFinal;
+
+      const root = document.documentElement;
+      Object.entries(CONFIG.colores).forEach(([name, value]) => {
+        root.style.setProperty(`--${name}`, value);
+      });
+    }
+
+    function showScreen(screenId) {
+      $$(".screen").forEach((screen) => screen.classList.remove("active"));
+      $(screenId).classList.add("active");
+    }
+
+    function goToStage(index) {
+      state.stage = index;
+      $$(".stage").forEach((stage) => {
+        stage.classList.toggle("active", Number(stage.dataset.stage) === index);
+      });
+      $("#stepLabel").textContent = `Reto ${index + 1} de 6`;
+      $("#progressBar").style.width = `${((index + 1) / 6) * 100}%`;
+    }
+
+    function renderMemories() {
+      const grid = $("#memoryGrid");
+      grid.innerHTML = "";
+
+      CONFIG.recuerdos.forEach((memory, index) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "memory-card";
+        card.innerHTML = `
+          <span class="seal">${index + 1}</span>
+          <strong>${memory.titulo}</strong>
+          <span>${memory.texto}</span>
+        `;
+        card.addEventListener("click", () => {
+          state.memoriesOpen.add(index);
+          card.classList.add("open");
+          if (state.memoriesOpen.size === CONFIG.recuerdos.length) {
+            $("#memoryDone").classList.remove("hidden");
+            $("#nextMemory").disabled = false;
+          }
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function renderChoices() {
+      const grid = $("#choiceGrid");
+      grid.innerHTML = "";
+
+      CONFIG.opcionesDivertidas.forEach((choice) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "choice-card";
+        card.innerHTML = `<strong>${choice.titulo}</strong><span>${choice.texto}</span>`;
+        card.addEventListener("click", () => {
+          $$(".choice-card").forEach((item) => item.classList.remove("selected"));
+          card.classList.add("selected");
+          $("#choiceResult").textContent = `${choice.texto} Buena elección. Igual, Paúl sospecha que la respuesta real eres tú completa.`;
+          $("#choiceResult").classList.remove("hidden");
+          $("#nextChoice").disabled = false;
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function normalize(text) {
+      return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[.,;:!¡?¿]/g, "")
+        .trim();
+    }
+
+    function checkRiddle() {
+      const value = normalize($("#riddleInput").value);
+      const accepted = CONFIG.respuestasAcertijo.map(normalize);
+      const result = $("#riddleResult");
+
+      if (accepted.includes(value)) {
+        result.textContent = "Exacto. Contigo suena como respuesta, plan y destino al mismo tiempo.";
+        result.classList.remove("hidden");
+        $("#nextRiddle").disabled = false;
+        burstAtCenter("❤️");
+      } else {
+        result.textContent = "Casi. Pista extra: Paúl escogería estar contigo.";
+        result.classList.remove("hidden");
+      }
+    }
+
+    function handleTapHeart() {
+      const button = $("#tapHeart");
+      state.tapCount += 1;
+      const lines = [
+        "No estoy nervioso",
+        "Bueno, tal vez un poquito",
+        "Ok, bastante",
+        "Es que eres tú",
+        "Ya casi lo digo",
+        "Sí: me encantas"
+      ];
+
+      button.textContent = lines[Math.min(state.tapCount, lines.length - 1)];
+      button.classList.remove("bump");
+      void button.offsetWidth;
+      button.classList.add("bump");
+      button.style.marginLeft = state.tapCount % 2 === 0 ? "18px" : "0";
+      $("#tapCounter").textContent = `Toques sinceros: ${Math.min(state.tapCount, 5)} de 5`;
+
+      if (state.tapCount >= 5) {
+        $("#tapResult").classList.remove("hidden");
+        $("#nextTap").disabled = false;
+        button.style.background = "var(--wine)";
+        burstAtCenter("💗");
+      }
+    }
+
+    function renderFeelings() {
+      const grid = $("#feelingGrid");
+      grid.innerHTML = "";
+
+      CONFIG.sentimientos.forEach((feeling) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "feeling-chip";
+        chip.innerHTML = `<strong>${feeling}</strong>`;
+        chip.addEventListener("click", () => {
+          if (state.feelings.has(feeling)) {
+            state.feelings.delete(feeling);
+            chip.classList.remove("selected");
+          } else {
+            state.feelings.add(feeling);
+            chip.classList.add("selected");
+          }
+          updateFeelingSummary();
+        });
+        grid.appendChild(chip);
+      });
+    }
+
+    function updateFeelingSummary() {
+      const selected = Array.from(state.feelings);
+      const summary = $("#feelingSummary");
+
+      if (selected.length < 3) {
+        summary.textContent = `Llevas ${selected.length} de 3. Elige ${3 - selected.length} más para abrir el mensaje.`;
+        $("#nextFeeling").disabled = true;
+        return;
+      }
+
+      summary.textContent = `Contigo siento ${selected.slice(0, 3).join(", ").toLowerCase()}. Y, sobre todo, siento que quiero intentarlo bonito contigo.`;
+      $("#nextFeeling").disabled = false;
+    }
+
+    function startHold() {
+      if (state.holdDone) return;
+      clearInterval(state.holdTimer);
+      state.holdStartedAt = Date.now();
+      $("#holdText").textContent = "No lo sueltes... la pregunta se está abriendo.";
+      state.holdTimer = setInterval(updateHold, 80);
+      updateHold();
+    }
+
+    function endHold() {
+      if (state.holdDone) return;
+      clearInterval(state.holdTimer);
+      state.holdTimer = null;
+      $("#holdMeter").style.width = "0%";
+      $("#holdText").textContent = "Casi. Mantén presionado el corazón por 3 segundos.";
+    }
+
+    function updateHold() {
+      const elapsed = Date.now() - state.holdStartedAt;
+      const progress = Math.min(100, (elapsed / 3000) * 100);
+      $("#holdMeter").style.width = `${progress}%`;
+
+      if (progress >= 100) {
+        clearInterval(state.holdTimer);
+        state.holdDone = true;
+        $("#holdText").textContent = "Listo. La última puerta está abierta.";
+        $("#goFinal").disabled = false;
+        burstAtCenter("❤️");
+      }
+    }
+
+    function startConfetti() {
+      const canvas = $("#confettiCanvas");
+      const ctx = canvas.getContext("2d");
+      const colors = [CONFIG.colores.wine, CONFIG.colores.rose, CONFIG.colores.gold, CONFIG.colores.jade, "#ffffff"];
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const amount = reduceMotion ? 28 : 96;
+
+      document.body.classList.add("celebrating");
+      resizeCanvas();
+      state.confettiPieces = Array.from({ length: amount }, () => ({
+        x: Math.random() * canvas.width,
+        y: -40 - Math.random() * canvas.height * 0.4,
+        size: 6 + Math.random() * 10,
+        speed: 1.8 + Math.random() * 3.8,
+        swing: Math.random() * 3,
+        angle: Math.random() * Math.PI,
+        spin: -0.12 + Math.random() * 0.24,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        heart: Math.random() > 0.58
+      }));
+
+      cancelAnimationFrame(state.confettiFrame);
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        state.confettiPieces.forEach((piece) => {
+          piece.y += piece.speed;
+          piece.x += Math.sin(piece.angle) * piece.swing;
+          piece.angle += piece.spin;
+
+          if (piece.y > canvas.height + 30) {
+            piece.y = -30;
+            piece.x = Math.random() * canvas.width;
+          }
+
+          ctx.save();
+          ctx.translate(piece.x, piece.y);
+          ctx.rotate(piece.angle);
+          ctx.fillStyle = piece.color;
+
+          if (piece.heart) {
+            drawHeart(ctx, 0, 0, piece.size);
+          } else {
+            ctx.fillRect(-piece.size / 2, -piece.size / 2, piece.size, piece.size * 0.62);
+          }
+          ctx.restore();
+        });
+        state.confettiFrame = requestAnimationFrame(draw);
+      }
+
+      draw();
+      setTimeout(() => {
+        document.body.classList.remove("celebrating");
+      }, 4200);
+    }
+
+    function drawHeart(ctx, x, y, size) {
+      const top = size * 0.28;
+      ctx.beginPath();
+      ctx.moveTo(x, y + top);
+      ctx.bezierCurveTo(x - size, y - size * 0.45, x - size * 0.92, y + size * 0.72, x, y + size);
+      ctx.bezierCurveTo(x + size * 0.92, y + size * 0.72, x + size, y - size * 0.45, x, y + top);
+      ctx.fill();
+    }
+
+    function resizeCanvas() {
+      const canvas = $("#confettiCanvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+    }
+
+    function burstAtCenter(symbol) {
+      const x = window.innerWidth / 2;
+      const y = window.innerHeight / 2;
+      for (let i = 0; i < 8; i += 1) {
+        const item = document.createElement("span");
+        item.className = "heart-burst";
+        item.textContent = symbol;
+        item.style.left = `${x + (Math.random() - 0.5) * 150}px`;
+        item.style.top = `${y + (Math.random() - 0.5) * 120}px`;
+        document.body.appendChild(item);
+        setTimeout(() => item.remove(), 1300);
+      }
+    }
+
+    function celebrateAnswer(label) {
+      $("#answerState").textContent = `${label} Entonces queda oficialmente inaugurado algo muy bonito.`;
+      startConfetti();
+      burstAtCenter("❤️");
+    }
+
+    function bindEvents() {
+      $("#startBtn").addEventListener("click", () => {
+        showScreen("#gameScreen");
+        goToStage(0);
+      });
+
+      $("#resetBtn").addEventListener("click", () => {
+        window.location.reload();
+      });
+
+      $("#nextMemory").addEventListener("click", () => goToStage(1));
+      $("#nextChoice").addEventListener("click", () => goToStage(2));
+      $("#nextRiddle").addEventListener("click", () => goToStage(3));
+      $("#nextTap").addEventListener("click", () => goToStage(4));
+      $("#nextFeeling").addEventListener("click", () => goToStage(5));
+      $("#goFinal").addEventListener("click", () => {
+        showScreen("#finalScreen");
+        startConfetti();
+      });
+
+      $("#checkRiddle").addEventListener("click", checkRiddle);
+      $("#riddleInput").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") checkRiddle();
+      });
+
+      $("#tapHeart").addEventListener("click", handleTapHeart);
+
+      const hold = $("#holdTarget");
+      hold.addEventListener("pointerdown", startHold);
+      hold.addEventListener("pointerup", endHold);
+      hold.addEventListener("pointerleave", endHold);
+      hold.addEventListener("pointercancel", endHold);
+      hold.addEventListener("keydown", (event) => {
+        if (event.key === " " || event.key === "Enter") startHold();
+      });
+      hold.addEventListener("keyup", endHold);
+
+      $("#yesBtn").addEventListener("click", () => celebrateAnswer("Sí."));
+      $("#obviousBtn").addEventListener("click", () => celebrateAnswer("Obvio que sí."));
+      window.addEventListener("resize", resizeCanvas);
+    }
+
+    applyConfig();
+    renderMemories();
+    renderChoices();
+    renderFeelings();
+    bindEvents();
+  </script>
+</body>
+</html>
